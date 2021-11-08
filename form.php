@@ -1,12 +1,47 @@
+<?php
+
+if (isset($_POST['submit'])) {
+    /* print_r($_POST['Nome']);
+    print_r('<br>');
+    print_r($_POST['URL']);
+    print_r('<br>');
+    print_r($_POST['Assunto']);
+    print_r('<br>');
+    print_r($_POST['valor']);
+    print_r('<br>');
+    print_r($_POST['pago']);
+    print_r('<br>');
+    print_r($_POST['nivel']);
+    print_r('<br>');
+    print_r($_POST['submit']); */
+
+    include_once('config.php');
+
+    $course_name = $_POST['Nome'];
+    $course_url = $_POST['URL'];
+    $course_theme = $_POST['Assunto'];
+    $course_cost = $_POST['valor'];
+    $course_value = $_POST['custo'];
+    $course_level = $_POST['nivel'];
+
+    if ($_POST['valor'] == 'Pago') {
+        $result = mysqli_query($conexao, "INSERT INTO course(course_name, course_url, course_theme, course_cost, course_value, course_level) VALUES ('$course_name', '$course_url', '$course_theme', '$course_cost', '$course_value', '$course_level') ");
+    } else {
+        $result = mysqli_query($conexao, "INSERT INTO course(course_name, course_url, course_theme, course_cost, course_level) VALUES ('$course_name', '$course_url', '$course_theme', '$course_cost', '$course_level') ");
+    }
+}
+
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="./css/form.css">
-    <script type="text/javascript" src="./js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="./form.css">
+    <script type="text/javascript" src="./main.js"></script>
     <title>Formulário</title>
 </head>
 
@@ -14,20 +49,20 @@
 
     <div id="courses">
         <div class="box">
-            <form action="">
+            <form action="form.php" method="POST">
                 <fieldset>
                     <legend><b>Me sugira um curso</b></legend>
                     <br><br>
                     <!-- NOME -->
                     <div class="inputBox">
-                        <input type="text" name="Nome do curso" id="course_nome" class="inputUser" required>
+                        <input type="text" name="Nome" id="course_nome" class="inputUser" required>
                         <label for="course_nome" class="labelInput">Nome do Curso</label>
                     </div>
                     <!-- //NOME -->
                     <br><br>
                     <!-- URL -->
                     <div class="inputBox">
-                        <input type="text" name="URL do curso" id="fomr_url" class="inputUser" required>
+                        <input type="url" name="URL" id="fomr_url" class="inputUser" required>
                         <label for="fomr_url" class="labelInput">URL do curso</label>
                     </div>
                     <!-- //URL -->
@@ -49,8 +84,8 @@
                         <br><br>
                         <div class="inputBox">
                             <div id="cost">
-                                <input type="number" name="pago" id="custo" class="inputUser" required>
-                                <label for="valor" class="labelInput custo">Valor</label>
+                                <input type="number" name="custo" id="custo" class="inputUser" required>
+                                <label for="custo" class="labelInput custo">Valor</label>
                                 <style>
                                     input[type=number]::-webkit-inner-spin-button,
                                     input[type=number]::-webkit-outer-spin-button {
@@ -63,8 +98,7 @@
                         <!-- //PAGO -->
                         <br>
                         <!-- GRATUITO -->
-                        <input type="radio" id="gratuito" name="valor" value="Gratuito" onclick="Esconde('cost')"
-                            required>
+                        <input type="radio" id="gratuito" name="valor" value="Gratuito" onclick="Esconde('cost')" required>
                         <label for="valor">Gratuito</label>
                         <!-- //GRATUITO -->
                     </div>
@@ -73,8 +107,7 @@
                     <!-- NIVEL -->
                     <div class="inputBox">
                         <label for="nivel">Nível: <br>Básico
-                            <input type="range" min="1" max="5" id="nivel" name="nivel" value="nivel" onchange="fetch()"
-                                required>
+                            <input type="range" min="1" max="5" id="nivel" name="nivel" onchange="fetch()" required>
                             Avançado
                         </label>
                         <!-- //NIVEL -->
